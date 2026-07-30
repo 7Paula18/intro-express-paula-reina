@@ -2,8 +2,11 @@ import express from 'express'
 import "dotenv/config"
 //const bodyParser = require('body-parser');//importacion commonjs
 import bodyParser from "body-parser";//importacion ES "module"
+import cors from "cors"
+
 const app = express(); 
 const port = process.env.port || 3000; 
+app.use(cors());
 
 //configurar el uso de body-parser para la aplicación - no se esta usando
 app.use(express.json())
@@ -33,7 +36,11 @@ app.get("/productos/:nombre", (req,res)=> {
 //1. Endpoint de saludo
 app.get("/saludo/:nombre",(req,res)=> {
     const nombre = req.params.nombre
-    res.send(`Hola ${nombre}, bienvenido`)
+
+    res.json({
+        mensaje: `Hola ${nombre}, bienvenido`
+    });
+
 });
 
 //2. Endpoint de productos
@@ -108,17 +115,17 @@ app.get("/usuarios/:id/:posts_id/comentarios", (req, res) => {
 //6. Libros
 const libros = [
     {
-        isbn: "9780001",
+        isbn: "87",
         titulo: "JavaScript Básico",
         autor: "Juan Pérez"
     },
     {
-        isbn: "9780002",
+        isbn: "52",
         titulo: "Node.js desde Cero",
         autor: "Ana Gómez"
     },
     {
-        isbn: "9780003",
+        isbn: "35",
         titulo: "Express Framework",
         autor: "Carlos Ruiz"
     }
@@ -138,7 +145,7 @@ app.get("/libros/:isbn", (req, res) => {
     res.json(libro);
 });
 
-
+// Esta funcionando
 app.listen(port, function(){ 
   console.log(`Servidor en funcionamiento en el puerto: ${port}`); 
 });
