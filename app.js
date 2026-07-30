@@ -10,7 +10,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 app.get("/", function(req, res){
-    res.send("Hola ficha 3407184, estamos aprendiento Express. en el SENA")
+    res.send("Hola ficha 3407184, estamos aprendiento Express en el SENA")
 })
 
 //otro endpoint, funcion de ficha
@@ -24,15 +24,118 @@ app.get("/productos", (req, res)=>{
         </ol>`)
 })
 
+//Ej Jhonny
 app.get("/productos/:nombre", (req,res)=> {
   const producto = req.params.nombre
-  res.send("El producto es ${producto}")
+  res.send(`El producto es ${producto}`)
 })
 
-//Endpoint de saludo
+//1. Endpoint de saludo
 app.get("/saludo/:nombre",(req,res)=> {
     const nombre = req.params.nombre
-    res.send(`Hola, ${nombre}, bienvenido`)
+    res.send(`Hola ${nombre}, bienvenido`)
+});
+
+//2. Endpoint de productos
+app.get("/productos/:id/:nombre/:stock/:precio/:categoria", (req, res) => {
+    const { id, nombre, stock, precio, categoria } = req.params;
+
+    res.json({
+        id,
+        nombre,
+        cantidadStock: stock,
+        precioUnitario: precio,
+        categoria
+    });
+});
+
+//3. Categoría con id
+app.get("/productos/:categoria/:id", (req, res) => {
+    const { categoria, id } = req.params;
+
+    res.json({
+        producto: id,
+        categoria: categoria,
+        servidor: servidor
+    });
+});
+
+//4. Lista de publicaciones
+app.get("/usuarios/:id/posts", (req, res) => {
+    const { id } = req.params;
+    const { orden = "asc" } = req.query;
+
+    let publicaciones = [
+        { id: 1, titulo: "Primer Post" },
+        { id: 2, titulo: "Segundo Post" },
+        { id: 3, titulo: "Tercer Post" }
+    ];
+
+    publicaciones.sort((a, b) =>
+        orden === "desc" ? b.id - a.id : a.id - b.id
+    );
+
+    res.json({
+        usuario: id,
+        orden: orden,
+        publicaciones
+    });
+});
+
+//5. Comentarios con filtro
+app.get("/usuarios/:id/:posts_id/comentarios", (req, res) => {
+    const { id, posts_id } = req.params;
+    const { orden = "asc" } = req.query;
+
+    let comentarios = [
+        { id: 1, comentario: "Excelente publicación" },
+        { id: 2, comentario: "Muy interesante" },
+        { id: 3, comentario: "Gracias por compartir" }
+    ];
+
+    comentarios.sort((a, b) =>
+        orden === "desc" ? b.id - a.id : a.id - b.id
+    );
+
+    res.json({
+        usuario: id,
+        post: posts_id,
+        orden: orden,
+        comentarios
+    });
+});
+
+//6. Libros
+const libros = [
+    {
+        isbn: "9780001",
+        titulo: "JavaScript Básico",
+        autor: "Juan Pérez"
+    },
+    {
+        isbn: "9780002",
+        titulo: "Node.js desde Cero",
+        autor: "Ana Gómez"
+    },
+    {
+        isbn: "9780003",
+        titulo: "Express Framework",
+        autor: "Carlos Ruiz"
+    }
+];
+
+app.get("/libros/:isbn", (req, res) => {
+    const { isbn } = req.params;
+
+    const libro = libros.find(libro => libro.isbn === isbn);
+
+    if (!libro) {
+        return res.status(404).json({
+            mensaje: "Libro no encontrado"
+        });
+    }
+
+    res.json(libro);
 });
 
 
