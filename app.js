@@ -6,13 +6,22 @@ const app = express();
 const port = process.env.port || 3000; 
 
 //configurar el uso de body-parser para la aplicación - no se esta usando
-app.use(express)
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
 
-app.get("/")
+app.get("/", function(req, res){
+    res.send("Hola ficha 3407184, estamos aprendiento Express. en el SENA")
+})
 
 //otro endpoint, funcion de ficha
-app.get("/productos", (res, res)=>{
-  //usando template string ""
+app.get("/productos", (req, res)=>{
+   //usando template string ``
+    res.send(`<h1>Listado de productos</h1>
+        <ol>
+        <li>Televisor</li>
+        <li>Celular</li>
+        <li>Impresora</li>
+        </ol>`)
 })
 
 app.get("/", (_, res) => { 
