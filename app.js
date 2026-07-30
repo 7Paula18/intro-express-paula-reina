@@ -29,6 +29,9 @@ app.get("/productos/:nombre", (req,res)=>{
   res.send("El producto es ${producto}")
 })
 
+//ejercicios
+
+
 app.listen(port, function(){ 
   console.log(`Servidor en funcionamiento en el puerto: ${port}`); 
 });
